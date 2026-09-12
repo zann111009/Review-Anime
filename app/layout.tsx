@@ -1,0 +1,3 @@
+import type { Metadata } from "next"; import "./globals.css"; import { Navbar } from "@/components/Navbar"; import { Footer } from "@/components/Footer";
+export const metadata:Metadata={title:{default:"AnimeRate — Review & Rating Anime",template:"%s — AnimeRate"},description:"Discover anime, give ratings, and share your review with the AnimeRate community.",openGraph:{title:"AnimeRate",description:"Anime reviews and ratings."},twitter:{card:"summary_large_image"}};
+export default function Layout({children}:{children:React.ReactNode}){return <html lang="id"><body><Navbar/><main>{children}</main><Footer/></body></html>}

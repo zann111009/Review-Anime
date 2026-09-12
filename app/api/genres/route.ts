@@ -1,0 +1,3 @@
+import { NextResponse } from "next/server"; import { prisma } from "@/lib/prisma"; import { auth } from "@/lib/auth"; import { z } from "zod";
+export async function GET(){return NextResponse.json(await prisma.genre.findMany({orderBy:{name:"asc"},include:{_count:{select:{anime:true}}}}));}
+export async function POST(req:Request){const s=await auth();if(s?.user.role!=="ADMIN")return NextResponse.json({error:"Forbidden"},{status:403});try{const d=z.object({name:z.string().min(2),slug:z.string().min(2)}).parse(await req.json());return NextResponse.json(await prisma.genre.create({data:d}),{status:201});}catch{return NextResponse.json({error:"Invalid genre"},{status:400});}}

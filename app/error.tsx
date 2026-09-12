@@ -1,0 +1,1 @@
+"use client"; export default function Error({reset}:{reset:()=>void}){return <section className="shell py-32 text-center"><h1 className="text-3xl font-black">Something went wrong</h1><p className="mt-3 muted">Silakan coba lagi.</p><button onClick={reset} className="btn btn-primary mt-6">Try again</button></section>}

@@ -1,0 +1,1 @@
+import { AnimeCard,AnimeCardData } from "./AnimeCard"; export function AnimeGrid({anime}:{anime:AnimeCardData[]}){return <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">{anime.map(a=><AnimeCard key={a.id} anime={a}/>)}</div>}

@@ -1,0 +1,13 @@
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql" url = env("DATABASE_URL") }
+
+enum Role { USER ADMIN }
+enum AnimeStatus { ONGOING COMPLETED HIATUS UPCOMING }
+model User { id String @id @default(cuid()); name String?; username String @unique; email String @unique; password String; avatar String?; role Role @default(USER); createdAt DateTime @default(now()); updatedAt DateTime @updatedAt; ratings Rating[]; comments Comment[]; commentLikes CommentLike[]; bookmarks Bookmark[] }
+model Anime { id String @id @default(cuid()); title String; slug String @unique; alternativeTitle String?; synopsis String @db.Text; coverImage String; bannerImage String?; year Int; season String?; status AnimeStatus @default(ONGOING); episodeCount Int?; studio String?; createdAt DateTime @default(now()); updatedAt DateTime @updatedAt; genres AnimeGenre[]; ratings Rating[]; comments Comment[]; bookmarks Bookmark[]; @@index([title]) }
+model Genre { id String @id @default(cuid()); name String @unique; slug String @unique; anime AnimeGenre[] }
+model AnimeGenre { animeId String; genreId String; anime Anime @relation(fields:[animeId], references:[id], onDelete: Cascade); genre Genre @relation(fields:[genreId], references:[id], onDelete: Cascade); @@id([animeId,genreId]); @@index([genreId]) }
+model Rating { id String @id @default(cuid()); userId String; animeId String; score Decimal @db.Decimal(3,1); createdAt DateTime @default(now()); updatedAt DateTime @updatedAt; user User @relation(fields:[userId], references:[id], onDelete: Cascade); anime Anime @relation(fields:[animeId], references:[id], onDelete: Cascade); @@unique([userId,animeId]); @@index([animeId]) }
+model Comment { id String @id @default(cuid()); userId String; animeId String; content String @db.Text; isPinned Boolean @default(false); createdAt DateTime @default(now()); updatedAt DateTime @updatedAt; user User @relation(fields:[userId], references:[id], onDelete: Cascade); anime Anime @relation(fields:[animeId], references:[id], onDelete: Cascade); likes CommentLike[]; @@index([animeId, isPinned]) }
+model CommentLike { id String @id @default(cuid()); userId String; commentId String; createdAt DateTime @default(now()); user User @relation(fields:[userId], references:[id], onDelete: Cascade); comment Comment @relation(fields:[commentId], references:[id], onDelete: Cascade); @@unique([userId,commentId]); @@index([commentId]) }
+model Bookmark { id String @id @default(cuid()); userId String; animeId String; createdAt DateTime @default(now()); user User @relation(fields:[userId], references:[id], onDelete: Cascade); anime Anime @relation(fields:[animeId], references:[id], onDelete: Cascade); @@unique([userId,animeId]); @@index([userId]) }

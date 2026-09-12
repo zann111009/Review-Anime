@@ -1,0 +1,4 @@
+import { z } from "zod";
+export const registerSchema = z.object({ username:z.string().min(3).max(30).regex(/^[a-zA-Z0-9_]+$/), email:z.string().email(), password:z.string().min(8), confirmPassword:z.string() }).refine(v=>v.password===v.confirmPassword,{path:["confirmPassword"],message:"Passwords do not match"});
+export const animeSchema = z.object({ title:z.string().min(1), slug:z.string().min(1).regex(/^[a-z0-9-]+$/), alternativeTitle:z.string().optional().nullable(), synopsis:z.string().min(20), coverImage:z.string().url(), bannerImage:z.string().url().optional().nullable(), year:z.coerce.number().int().min(1900).max(2100), season:z.string().optional().nullable(), status:z.enum(["ONGOING","COMPLETED","HIATUS","UPCOMING"]), episodeCount:z.coerce.number().int().positive().optional().nullable(), studio:z.string().optional().nullable(), genreIds:z.array(z.string()).default([]) });
+export const commentSchema = z.object({ content:z.string().trim().min(3).max(3000) });

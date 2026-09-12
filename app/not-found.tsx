@@ -1,0 +1,1 @@
+import Link from "next/link"; export default function NotFound(){return <section className="shell py-32 text-center"><h1 className="text-5xl font-black">404</h1><p className="mt-4 muted">Anime tidak ditemukan.</p><Link className="btn btn-primary mt-6" href="/anime">Explore Anime</Link></section>}
